@@ -14,6 +14,14 @@ public class DoorController : MonoBehaviour {
         }
     }
 
+    // when colliding with the player, move to the next level if the door is open
+    void OnTriggerEnter2D(Collider2D coll) {
+        if (m_open) {
+            Debug.Log("Level complete!");
+            // TODO: level transition (possibly with anim)
+        }
+    }
+
     // open the door if all the switches are active; called whenever a switch is flipped
     public void CheckSwitches() {
         foreach (SwitchController switchCon in m_switchCons) {

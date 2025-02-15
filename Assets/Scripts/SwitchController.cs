@@ -13,6 +13,8 @@ public class SwitchController : MonoBehaviour {
         m_doorCon = GameObject.Find("ExitDoor").GetComponent<DoorController>();
     }
 
+    // when colliding with the player, activate *only* if the player is moving in the same direction
+    // as the red arrow in the editor (local positive x direction)
     void OnTriggerEnter2D(Collider2D coll) {
         Vector3 playerDir = Vector3.Normalize((Vector3) coll.attachedRigidbody.linearVelocity);
         if (playerDir == transform.right) {

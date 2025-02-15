@@ -2,19 +2,13 @@ using UnityEngine;
 
 public class CameraFollow : MonoBehaviour
 {
-    public float FollowSpeed = 2f;
-    public float YOffset = 1f;
-    public Transform target;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    public float m_followSpeed;
+    public float m_yOffset;
+    public Transform m_target;
 
     // Update is called once per frame
-    void Update()
-    {
-        Vector3 newPos = new Vector3(target.position.x, target.position.y + YOffset, -10.0f);
-        transform.position = Vector3.Slerp(transform.position, newPos, FollowSpeed * Time.deltaTime);
+    void Update() {
+        Vector3 newPos = new Vector3(m_target.position.x, m_target.position.y + m_yOffset, -10.0f);
+        transform.position = Vector3.Slerp(transform.position, newPos, m_followSpeed * Time.deltaTime);
     }
 }

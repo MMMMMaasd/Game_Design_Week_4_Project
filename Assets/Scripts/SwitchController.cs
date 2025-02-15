@@ -2,18 +2,16 @@ using UnityEngine;
 
 public class SwitchController : MonoBehaviour {
     public bool m_active = false;
+    public Sprite[] m_sprites = new Sprite[2];
 
+    SpriteRenderer m_renderer;
     DoorController m_doorCon;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
+        m_renderer = gameObject.GetComponent<SpriteRenderer>();
         m_doorCon = GameObject.Find("ExitDoor").GetComponent<DoorController>();
     }
-
-    // Update is called once per frame
-    // void Update() {
-        
-    // }
 
     void OnTriggerEnter2D(Collider2D coll) {
         Vector3 playerDir = Vector3.Normalize((Vector3) coll.attachedRigidbody.linearVelocity);
@@ -23,6 +21,7 @@ public class SwitchController : MonoBehaviour {
     }
 
     void Activate() {
+        m_renderer.sprite = m_sprites[1];
         m_active = true;
         m_doorCon.CheckSwitches();
     }

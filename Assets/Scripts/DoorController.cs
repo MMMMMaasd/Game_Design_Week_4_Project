@@ -14,11 +14,6 @@ public class DoorController : MonoBehaviour {
         }
     }
 
-    // Update is called once per frame
-    // void Update() {
-        
-    // }
-
     // open the door if all the switches are active; called whenever a switch is flipped
     public void CheckSwitches() {
         foreach (SwitchController switchCon in m_switchCons) {

@@ -3,30 +3,31 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float speed;
-    public Animator animator;
-    private Rigidbody2D body;
+
+    Animator m_animator;
+    Rigidbody2D m_body;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        body = GetComponent<Rigidbody2D>();
+    void Start() {
+        m_animator = GetComponent<Animator>();
+        m_body = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal");
-        float horizontalInput_with_speed = horizontalInput * speed;
+        // basic horizontal motion, this may need to be changed when we implement the gravity
+        float horizMotion = Input.GetAxisRaw("Horizontal") * speed;
+        m_body.linearVelocity = new Vector2(horizMotion, m_body.linearVelocity.y);
 
-        animator.SetFloat("Speed", Mathf.Abs(horizontalInput_with_speed));
-
-        body.linearVelocity = new Vector2(horizontalInput_with_speed, body.linearVelocity.y);
-        if (horizontalInput < 0)
-        {
+        // flip body horizontally depending on motion direction
+        if (horizMotion < 0) {
+            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        } else if (horizMotion > 0) {
             transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
         }
-        else if (horizontalInput > 0)
-        {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        }
+
+        // tell animator whether the player is moving
+        m_animator.SetFloat("Speed", Mathf.Abs(horizMotion));
     }
 }

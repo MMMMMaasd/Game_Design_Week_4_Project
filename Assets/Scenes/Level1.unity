@@ -327,9 +327,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97385291290f14ff9831886acd052452, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FollowSpeed: 2
-  YOffset: 1
-  target: {fileID: 0}
+  m_followSpeed: 5
+  m_yOffset: 1
+  m_target: {fileID: 1051853016}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
@@ -448,7 +448,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 10
-  animator: {fileID: 1051853019}
 --- !u!212 &1051853015
 SpriteRenderer:
   m_ObjectHideFlags: 0

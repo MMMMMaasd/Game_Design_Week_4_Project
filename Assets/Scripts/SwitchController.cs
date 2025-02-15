@@ -15,6 +15,13 @@ public class SwitchController : MonoBehaviour {
         
     // }
 
+    void OnTriggerEnter2D(Collider2D coll) {
+        Vector3 playerDir = Vector3.Normalize((Vector3) coll.attachedRigidbody.linearVelocity);
+        if (playerDir == transform.right) {
+            Activate();
+        }
+    }
+
     void Activate() {
         m_active = true;
         m_doorCon.CheckSwitches();

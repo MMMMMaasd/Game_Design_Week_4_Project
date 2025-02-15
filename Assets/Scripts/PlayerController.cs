@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public float speed;
+    public float m_speed;
 
     Animator m_animator;
     Rigidbody2D m_body;
@@ -17,7 +17,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         // basic horizontal motion, this may need to be changed when we implement the gravity
-        float horizMotion = Input.GetAxisRaw("Horizontal") * speed;
+        float horizMotion = Input.GetAxisRaw("Horizontal") * m_speed;
         m_body.linearVelocity = new Vector2(horizMotion, m_body.linearVelocity.y);
 
         // flip body horizontally depending on motion direction

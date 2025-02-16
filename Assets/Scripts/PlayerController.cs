@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviour
     Animator m_animator;
     Rigidbody2D m_body;
     Vector3 m_startPos;
-    List<GameObject> m_collisions = new List<GameObject>();
+    bool[] m_grounded = new bool[4];
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -21,21 +21,20 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update() {
         // handle gravity changes and sprite flipping
-        bool grounded = m_collisions.Count > 0;
         Vector3 newScale = transform.localScale;
-        if (Input.GetKeyDown(KeyCode.W) && grounded) {
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow)) && CanFlip("up")) {
             Physics2D.gravity = new Vector2(0, 7f);
             m_body.linearVelocityX = 0;
             newScale.y = -5;
-        } else if (Input.GetKeyDown(KeyCode.S) && grounded) {
+        } else if ((Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow)) && CanFlip("down")) {
             Physics2D.gravity = new Vector2(0, -7f);
             m_body.linearVelocityX = 0;
             newScale.y = 5;
-        } else if (Input.GetKeyDown(KeyCode.A) && grounded) {
+        } else if ((Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow)) && CanFlip("left")) {
             Physics2D.gravity = new Vector2(-7f, 0);
             m_body.linearVelocityY = 0;
             newScale.x = -5;
-        } else if (Input.GetKeyDown(KeyCode.D) && grounded) {
+        } else if ((Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow)) && CanFlip("right")) {
             Physics2D.gravity = new Vector2(7f, 0);
             m_body.linearVelocityY = 0;
             newScale.x = 5;
@@ -46,19 +45,43 @@ public class PlayerController : MonoBehaviour
         m_animator.SetFloat("Speed", Mathf.Abs(m_body.linearVelocityX));
     }
 
-    private void OnCollisionEnter2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Ground")) {
-            m_collisions.Add(collision.gameObject);
+    // returns whether you're allowed to flip in the provided direction
+    bool CanFlip(string dir) {
+        if (dir == "up") {
+            return !m_grounded[0] && (m_grounded[1] || m_grounded[2] || m_grounded[3]);
+        } else if (dir == "down") {
+            return !m_grounded[1] && (m_grounded[0] || m_grounded[2] || m_grounded[3]);
+        } else if (dir == "left") {
+            return !m_grounded[2] && (m_grounded[1] || m_grounded[0] || m_grounded[3]);
+        } else if (dir == "right") {
+            return !m_grounded[3] && (m_grounded[1] || m_grounded[2] || m_grounded[0]);
         }
+        return false;
+    }
 
-        if (collision.gameObject.CompareTag("Spike")) {
+    void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Ceiling")) {
+            m_grounded[0] = true;
+        } else if (collision.gameObject.CompareTag("Floor")) {
+            m_grounded[1] = true;
+        } else if (collision.gameObject.CompareTag("LeftWall")) {
+            m_grounded[2] = true;
+        } else if (collision.gameObject.CompareTag("RightWall")) {
+            m_grounded[3] = true;
+        } else if (collision.gameObject.CompareTag("Spike")) {
             Die();
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision) {
-        if (collision.gameObject.CompareTag("Ground")) {
-            m_collisions.Remove(collision.gameObject);
+    void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Ceiling")) {
+            m_grounded[0] = false;
+        } else if (collision.gameObject.CompareTag("Floor")) {
+            m_grounded[1] = false;
+        } else if (collision.gameObject.CompareTag("LeftWall")) {
+            m_grounded[2] = false;
+        } else if (collision.gameObject.CompareTag("RightWall")) {
+            m_grounded[3] = false;
         }
     }
 

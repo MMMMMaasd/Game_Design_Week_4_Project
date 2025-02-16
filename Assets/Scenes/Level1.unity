@@ -133,7 +133,7 @@ GameObject:
   - component: {fileID: 80368226}
   m_Layer: 0
   m_Name: ground2
-  m_TagString: Ground
+  m_TagString: Ceiling
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -576,7 +576,7 @@ GameObject:
   - component: {fileID: 961384903}
   m_Layer: 0
   m_Name: wall1
-  m_TagString: Ground
+  m_TagString: LeftWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1072,7 +1072,7 @@ GameObject:
   - component: {fileID: 1504669415}
   m_Layer: 0
   m_Name: wall2
-  m_TagString: Ground
+  m_TagString: RightWall
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1220,7 +1220,7 @@ GameObject:
   - component: {fileID: 1568973293}
   m_Layer: 0
   m_Name: ground1
-  m_TagString: Ground
+  m_TagString: Floor
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

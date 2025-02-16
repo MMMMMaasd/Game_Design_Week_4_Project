@@ -8,12 +8,14 @@ public class PlayerController : MonoBehaviour
 
     Animator m_animator;
     Rigidbody2D m_body;
+    Vector3 m_startPos;
     List<GameObject> m_collisions = new List<GameObject>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         m_animator = GetComponent<Animator>();
         m_body = GetComponent<Rigidbody2D>();
+        m_startPos = transform.position;
     }
 
     // Update is called once per frame
@@ -50,7 +52,7 @@ public class PlayerController : MonoBehaviour
         }
 
         if (collision.gameObject.CompareTag("Spike")) {
-            TakeDamage();
+            Die();
         }
     }
 
@@ -60,14 +62,18 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    void TakeDamage() {
+    void Die() {
         m_lives--;
         Debug.Log("Lives left: " + m_lives);
+        if (m_lives <= 0) GameOver();
 
-        if (m_lives <= 0) Die();
+        // respawn at start position
+        transform.position = m_startPos;
+        Physics2D.gravity = new Vector2(0, -7f);
+        m_body.linearVelocity = Vector2.zero;
     }
 
-    void Die() {
+    void GameOver() {
         Debug.Log("Player Died!");
         gameObject.SetActive(false);
     }

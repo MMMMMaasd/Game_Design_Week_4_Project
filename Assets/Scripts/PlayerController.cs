@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     Animator m_animator;
     Rigidbody2D m_body;
 
+    private bool isGrounded = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
         m_animator = GetComponent<Animator>();
@@ -30,16 +32,39 @@ public class PlayerController : MonoBehaviour
 
         // tell animator whether the player is moving
         m_animator.SetFloat("Speed", Mathf.Abs(horizMotion));
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
+            ReverseGravity();
+        }
+    }
+
+    // gravity reverse
+    void ReverseGravity() {
+        m_body.gravityScale = -m_body.gravityScale;
+        Vector3 currentScale = transform.localScale;
+        transform.localScale = new Vector3(currentScale.x, -currentScale.y, currentScale.z);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+
         if (collision.gameObject.CompareTag("Spike"))
         {
             TakeDamage();
         }
     }
 
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
 
     void TakeDamage()
     {

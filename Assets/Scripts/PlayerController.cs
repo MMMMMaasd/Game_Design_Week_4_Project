@@ -3,12 +3,11 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float m_speed;
-    public int lives = 3;
+    public int m_lives = 3;
 
     Animator m_animator;
     Rigidbody2D m_body;
-
-    private bool isGrounded = false;
+    bool m_grounded = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
@@ -19,66 +18,50 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // basic horizontal motion, this may need to be changed when we implement the gravity
-        float horizMotion = Input.GetAxisRaw("Horizontal") * m_speed;
-        m_body.linearVelocity = new Vector2(horizMotion, m_body.linearVelocity.y);
-
-        // flip body horizontally depending on motion direction
-        if (horizMotion < 0) {
-            transform.localScale = new Vector3(-Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
-        } else if (horizMotion > 0) {
-            transform.localScale = new Vector3(Mathf.Abs(transform.localScale.x), transform.localScale.y, transform.localScale.z);
+        Vector3 newScale = transform.localScale;
+        if (Input.GetKeyDown(KeyCode.W) && m_grounded) {
+            Physics2D.gravity = new Vector2(0, 7f);
+            newScale.y = -5;
+        } else if (Input.GetKeyDown(KeyCode.S) && m_grounded) {
+            Physics2D.gravity = new Vector2(0, -7f);
+            newScale.y = 5;
+        } else if (Input.GetKeyDown(KeyCode.A) && m_grounded) {
+            Physics2D.gravity = new Vector2(-7f, 0);
+            newScale.x = -5;
+        } else if (Input.GetKeyDown(KeyCode.D) && m_grounded) {
+            Physics2D.gravity = new Vector2(7f, 0);
+            newScale.x = 5;
         }
+        transform.localScale = newScale;
 
         // tell animator whether the player is moving
-        m_animator.SetFloat("Speed", Mathf.Abs(horizMotion));
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) {
-            ReverseGravity();
-        }
+        m_animator.SetFloat("Speed", Mathf.Abs(m_body.linearVelocity.x));
     }
 
-    // gravity reverse
-    void ReverseGravity() {
-        m_body.gravityScale = -m_body.gravityScale;
-        Vector3 currentScale = transform.localScale;
-        transform.localScale = new Vector3(currentScale.x, -currentScale.y, currentScale.z);
-    }
-
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
+    private void OnCollisionEnter2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Ground")) {
+            m_grounded = true;
         }
 
-        if (collision.gameObject.CompareTag("Spike"))
-        {
+        if (collision.gameObject.CompareTag("Spike")) {
             TakeDamage();
         }
     }
 
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
+    private void OnCollisionExit2D(Collision2D collision) {
+        if (collision.gameObject.CompareTag("Ground")) {
+            m_grounded = false;
         }
     }
 
-    void TakeDamage()
-    {
-        lives--;
-        Debug.Log("Lives left: " + lives);
+    void TakeDamage() {
+        m_lives--;
+        Debug.Log("Lives left: " + m_lives);
 
-        if (lives <= 0)
-        {
-            Die();
-        }
+        if (m_lives <= 0) Die();
     }
 
-    void Die()
-    {
+    void Die() {
         Debug.Log("Player Died!");
         gameObject.SetActive(false);
     }

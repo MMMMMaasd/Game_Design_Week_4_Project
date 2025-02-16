@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public float m_speed;
+    public int lives = 3;
 
     Animator m_animator;
     Rigidbody2D m_body;
@@ -29,5 +30,31 @@ public class PlayerController : MonoBehaviour
 
         // tell animator whether the player is moving
         m_animator.SetFloat("Speed", Mathf.Abs(horizMotion));
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Spike"))
+        {
+            TakeDamage();
+        }
+    }
+
+
+    void TakeDamage()
+    {
+        lives--;
+        Debug.Log("Lives left: " + lives);
+
+        if (lives <= 0)
+        {
+            Die();
+        }
+    }
+
+    void Die()
+    {
+        Debug.Log("Player Died!");
+        gameObject.SetActive(false);
     }
 }

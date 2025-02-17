@@ -1,6 +1,8 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DoorController : MonoBehaviour {
+    public string m_nextScene;
     public bool m_open = false;
 
     SwitchController[] m_switchCons;
@@ -18,7 +20,7 @@ public class DoorController : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D coll) {
         if (m_open) {
             Debug.Log("Level complete!");
-            // TODO: level transition (possibly with anim)
+            SceneManager.LoadScene(m_nextScene);
         }
     }
 

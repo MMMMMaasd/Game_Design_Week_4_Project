@@ -17,8 +17,6 @@ public class SwitchController : MonoBehaviour {
     // as the red arrow in the editor (local positive x direction)
     void OnTriggerEnter2D(Collider2D coll) {
         Vector3 playerDir = Vector3.Normalize((Vector3) coll.attachedRigidbody.linearVelocity);
-        Debug.Log(playerDir);
-        Debug.Log(transform.right);
         if (playerDir == transform.right) {
             Activate();
         }

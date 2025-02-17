@@ -95,6 +95,7 @@ public class PlayerController : MonoBehaviour
         transform.localScale = new Vector3(5f, 5f, 5f);
         Physics2D.gravity = new Vector2(0, -7f);
         m_body.linearVelocity = Vector2.zero;
+        for (int i = 0; i < 4; i++) m_grounded[i] = false;
     }
 
     void GameOver() {

@@ -92,6 +92,7 @@ public class PlayerController : MonoBehaviour
 
         // respawn at start position
         transform.position = m_startPos;
+        transform.localScale = new Vector3(5f, 5f, 5f);
         Physics2D.gravity = new Vector2(0, -7f);
         m_body.linearVelocity = Vector2.zero;
     }

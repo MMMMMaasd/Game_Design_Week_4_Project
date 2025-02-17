@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class PlayerController : MonoBehaviour
 {
     public float m_speed;
-    public int m_lives = 3;
 
     Animator m_animator;
     Rigidbody2D m_body;
@@ -87,9 +86,8 @@ public class PlayerController : MonoBehaviour
     }
 
     void Die() {
-        m_lives--;
-        Debug.Log("Lives left: " + m_lives);
-        if (m_lives <= 0) GameOver();
+        ScoreTracker.deaths++;
+        Debug.Log("Total deaths: " + ScoreTracker.deaths);
 
         // respawn at start position
         transform.position = m_startPos;
@@ -101,10 +99,5 @@ public class PlayerController : MonoBehaviour
         Physics2D.gravity = new Vector2(0, -7f);
         m_body.linearVelocity = Vector2.zero;
         for (int i = 0; i < 4; i++) m_grounded[i] = false;
-    }
-
-    void GameOver() {
-        Debug.Log("Player Died!");
-        gameObject.SetActive(false);
     }
 }

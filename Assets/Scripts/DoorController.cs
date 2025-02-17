@@ -20,6 +20,7 @@ public class DoorController : MonoBehaviour {
     void OnTriggerEnter2D(Collider2D coll) {
         if (m_open) {
             Debug.Log("Level complete!");
+            ScoreTracker.timer += Time.timeSinceLevelLoad;
             SceneManager.LoadScene(m_nextScene);
         }
     }

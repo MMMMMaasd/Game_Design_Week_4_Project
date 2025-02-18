@@ -4,11 +4,14 @@ using UnityEngine.SceneManagement;
 public class DoorController : MonoBehaviour {
     public string m_nextScene;
     public bool m_open = false;
+    public Sprite[] m_sprites = new Sprite[2];
 
+    SpriteRenderer m_renderer;
     SwitchController[] m_switchCons;
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start() {
+        m_renderer = gameObject.GetComponent<SpriteRenderer>();
         GameObject[] switches = GameObject.FindGameObjectsWithTag("Switch");
         m_switchCons = new SwitchController[switches.Length];
         for (int i = 0; i < switches.Length; i++) {
@@ -30,6 +33,7 @@ public class DoorController : MonoBehaviour {
         foreach (SwitchController switchCon in m_switchCons) {
             if (switchCon.m_active == false) return;
         }
+        m_renderer.sprite = m_sprites[1];
         m_open = true;
     }
 }
